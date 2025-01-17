@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="user/styles.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Document Management System</h1>
+        <div id="register-section" class="my-4">
+            <h3>Register</h3>
+            <form id="register-form" >
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" autocomplete="off" required>
+                </div>
+                <div class="mb-3">
+                    <label for="nationalId" class="form-label">National ID</label>
+                    <input type="text" class="form-control" id="nationalId" autocomplete="off"  required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="phone" autocomplete="off" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" autocomplete="off"  required>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+            <div class="separator"></div>
+            <div class="background-decor"></div>
+            <div class="background-decor"></div>
+        </div>
+
+        <!-- Login Section -->
+        <div id="login-section" class="my-4" style="display: none;">
+            <h3>Login</h3>
+            <form id="login-form">
+                <div class="mb-3">
+                    <label for="loginNationalId" class="form-label">National ID</label>
+                    <input type="text" class="form-control" id="loginNationalId" autocomplete="off" required>
+                </div>
+                <div class="mb-3">
+                    <label for="loginPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" autocomplete="off" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <div class="separator"></div>
+        </div>
+        
+        <div id="upload-section" class="my-4" style="display: none;">
+            <h3>Upload Document</h3>
+            <form id="upload-form">
+                <div class="mb-3">
+                    <label for="file" class="form-label">Choose File</label>
+                    <input type="file" class="form-control" id="file" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+            <div class="separator"></div>
+        </div>
+        <!-- Verify Document Section -->
+        <!-- <div id="verify-section" class="my-4" style="display: none;">
+            <h3>Verify Document Signature</h3>
+            <form id="verify-form">
+                <div class="mb-3">
+                    <label for="verify-file-path" class="form-label">Document Path</label>
+                    <input type="text" class="form-control" id="verify-file-path" required>
+                </div>
+                <div class="mb-3">
+                    <label for="verify-signature-path" class="form-label">Signature Path</label>
+                    <input type="text" class="form-control" id="verify-signature-path" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Verify Signature</button>
+            </form>
+        </div> -->
+    </div>
+    
+    <script src="user/app.js"></script>
+</body>
+
+    </html>
