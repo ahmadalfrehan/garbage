@@ -291,20 +291,58 @@ def admin_logout():
     return jsonify(message="Admin logged out"), 200
 
 
+
+
 @app.route('/admin/search', methods=['GET'])
-# @jwt_required()
 def admin_search():
-    # Example of admin search route
-    documents = Document.query.all()
-    results = [
+    # Ensure the user is authenticated as an admin
+    if not session.get("admin_authenticated"):
+        return jsonify(message="Access denied"), 403
+
+    # Get the national_id from query parameters
+    national_id = request.args.get("national_id")
+    if not national_id:
+        return jsonify(message="National ID is required"), 400
+
+    # Query the database to find the user by national_id
+    user = User.query.filter_by(national_id=national_id).first()
+    if not user:
+        return jsonify(message="No user found with this National ID"), 404
+
+    # Query documents owned by this user
+    documents = Document.query.filter_by(owner_id=user.id).all()
+
+    # Convert documents to a list of dictionaries
+    document_list = [
         {
-            'id': doc.id,
-            'owner_id': doc.owner_id,
-            'file_name': doc.file_name,
-            'uploaded_at': doc.uploaded_at
-        } for doc in documents
+            "id": doc.id,
+            "owner_id": doc.owner_id,
+            "file_name": doc.file_name,
+            "file_path": doc.file_path,
+            "uploaded_at": doc.uploaded_at.strftime("%Y-%m-%d %H:%M:%S"),
+        }
+        for doc in documents
     ]
-    return jsonify(results=results), 200
+
+    return jsonify(results=document_list), 200
+
+
+
+
+# @app.route('/admin/search', methods=['GET'])
+# # @jwt_required()
+# def admin_search():
+#     # Example of admin search route
+#     documents = Document.query.all()
+#     results = [
+#         {
+#             'id': doc.id,
+#             'owner_id': doc.owner_id,
+#             'file_name': doc.file_name,
+#             'uploaded_at': doc.uploaded_at
+#         } for doc in documents
+#     ]
+#     return jsonify(results=results), 200
 
 
 
@@ -320,7 +358,7 @@ def serve_user_index():
 
 
 @app.route('/admin')
-@admin_required
+# @admin_required
 def serve_admin_index():
     return send_from_directory('frontend/admin', 'index.html')
 

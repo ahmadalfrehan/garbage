@@ -124,36 +124,47 @@ document.getElementById("verify-form").addEventListener("submit", async (event) 
     alert(data.message || "Verification complete");
 });
 
-
-// Handle Admin Search
 document.getElementById("search-documents").addEventListener("click", async () => {
-    console.log("GARBAGE")
-    const token = localStorage.getItem("token");
-    const response = await fetch(`${BASE_URL}/admin/search`, {
+    const nationalId = prompt("Enter National ID to search for documents:");
+    if (!nationalId) {
+        alert("National ID is required!");
+        return;
+    }
+
+    const token = localStorage.getItem("token"); // Admin token for authentication
+    const response = await fetch(`${BASE_URL}/admin/search?national_id=${encodeURIComponent(nationalId)}`, {
         method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`, // Add token for secure access
+        },
     });
+
     if (response.ok) {
         const data = await response.json();
-        console.log(data)
         const resultsContainer = document.getElementById("search-results");
         resultsContainer.innerHTML = "";
-        data.results.forEach((doc) => {
-            const docItem = document.createElement("div");
-            docItem.classList.add("card", "mb-3");
-            docItem.innerHTML = `
-                <div class="card-body">
-                    <h5 class="card-title">Document ID: ${doc.id}</h5>
-                    <p class="card-text">
-                       <strong>Owner ID:</strong> ${doc.owner_id}<br>
-                         <strong>Owner NAME:</strong> ${doc.o}<br>
-                        <strong>File Name:</strong> ${doc.file_name}<br>
-                        <strong>Uploaded At:</strong> ${new Date(doc.uploaded_at).toLocaleString()}
-                    </p>
-                </div>
-            `;
-            resultsContainer.appendChild(docItem);
-        });
+
+        if (data.results && data.results.length > 0) {
+            data.results.forEach((doc) => {
+                const docItem = document.createElement("div");
+                docItem.classList.add("card", "mb-3");
+                docItem.innerHTML = `
+                    <div class="card-body">
+                        <h5 class="card-title">Document ID: ${doc.id}</h5>
+                        <p class="card-text">
+                           <strong>File Name:</strong> ${doc.file_name}<br>
+                           <strong>Uploaded At:</strong> ${doc.uploaded_at}<br>
+                           <strong>File Path:</strong> ${doc.file_path}
+                        </p>
+                    </div>
+                `;
+                resultsContainer.appendChild(docItem);
+            });
+        } else {
+            resultsContainer.innerHTML = "<p>No documents found for the provided National ID.</p>";
+        }
     } else {
-        alert("Failed to fetch documents");
+        const error = await response.json();
+        alert(error.message || "Failed to fetch documents");
     }
 });
