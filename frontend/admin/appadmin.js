@@ -1,4 +1,4 @@
-const BASE_URL = "http://127.0.0.1:5000"; // Flask server URL
+const BASE_URL = "https://127.0.0.1:5000"; // Flask server URL
 
 document.getElementById('download-form').style.display = 'none'
 document.getElementById("search-documents").style.display = 'none'
@@ -36,7 +36,7 @@ document.getElementById("admin-login-section").addEventListener("submit", async 
     const password = document.getElementById("admin-password").value;
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/admin/login", {
+        const response = await fetch("https://127.0.0.1:5000/admin/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password }),

@@ -18,12 +18,13 @@ import os
 from flask import send_from_directory
 import clamd
 import html
-
+import secrets
 
 # Initialize Flask App
 app = Flask(__name__)
 
-app.secret_key = "a_unique_secure_key_1234567890"
+app.secret_key =secrets.token_hex(32) #"a_unique_secure_key_1234567890"
+print(secrets.token_hex(32))
 # Configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -471,5 +472,5 @@ def serve_admin_index():
 
 # Run Server
 if __name__ == '__main__':
-    app.run(debug=True)
-    # app.run(ssl_context=("server_certificate.pem", "server_private_key.pem"))
+    # app.run(debug=True)
+    app.run(ssl_context=("server_certificate.pem", "server_private_key.pem"),debug=False)
